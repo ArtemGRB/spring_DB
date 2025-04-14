@@ -13,7 +13,6 @@ public class StudentService {
 
     private StudentRepository studentRepository;
 
-    @Autowired
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
@@ -22,8 +21,11 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Optional<Student> getStudentById(long id) {
-        return studentRepository.findById(id);
+    public Student getStudentById(long id) {
+        if (studentRepository.existsById(id)) {
+            return studentRepository.findById(id).get();
+        }
+        return null;
     }
 
     public Student updateStudent(long id, Student student) {
@@ -31,10 +33,13 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Optional<Student> deleteStudent(long id) {
+    public Student deleteStudent(long id) {
         Optional<Student> student = studentRepository.findById(id);
         studentRepository.deleteById(id);
-        return student;
+        if (studentRepository.existsById(id)) {
+            return student.get();
+        }
+        return null;
     }
 
     public Set<Student> filterStudent(int age) {

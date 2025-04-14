@@ -4,15 +4,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
-
-import java.util.Optional;
 import java.util.Set;
 
 @RestController
 @RequestMapping("student")
 public class StudentController {
 
-    StudentService studentService;
+    private final StudentService studentService;
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
@@ -20,9 +18,9 @@ public class StudentController {
 
     @GetMapping("{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id) {
-        Optional<Student> student = studentService.getStudentById(id);
-        if (student.isPresent()) {
-            return ResponseEntity.ok(student.get());
+       Student student = studentService.getStudentById(id);
+        if (student != null) {
+            return ResponseEntity.ok(student);
         }
         return ResponseEntity.notFound().build();
     }
@@ -43,9 +41,9 @@ public class StudentController {
 
     @DeleteMapping("{id}")
     public ResponseEntity deleteStudent(@PathVariable Long id) {
-        Optional<Student> delStudent = studentService.deleteStudent(id);
-        if (delStudent.isPresent()) {
-            return ResponseEntity.ok(delStudent.get());
+        Student delStudent = studentService.deleteStudent(id);
+        if (delStudent != null) {
+            return ResponseEntity.ok(delStudent);
         }
         return ResponseEntity.notFound().build();
     }

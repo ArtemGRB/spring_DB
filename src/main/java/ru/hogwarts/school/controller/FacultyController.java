@@ -20,10 +20,9 @@ public class FacultyController {
 
     @GetMapping("{id}")
     public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
-        Optional<Faculty> faculty = facultyService.getFacultyById(id);
-        if (faculty.isPresent()) {
-            return ResponseEntity.ok(faculty.get());
-
+        Faculty faculty = facultyService.getFacultyById(id);
+        if (faculty != null) {
+            return ResponseEntity.ok(faculty);
         }
         return ResponseEntity.notFound().build();
     }
@@ -44,9 +43,9 @@ public class FacultyController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id) {
-    Optional<Faculty> delFaculty = facultyService.deleteFaculty(id);
-        if (delFaculty.isPresent()) {
-        return ResponseEntity.ok(delFaculty.get());
+    Faculty delFaculty = facultyService.deleteFaculty(id);
+        if (delFaculty != null) {
+        return ResponseEntity.ok(delFaculty);
     }
         return ResponseEntity.notFound().build();
 }

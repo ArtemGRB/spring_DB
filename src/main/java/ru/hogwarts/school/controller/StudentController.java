@@ -2,8 +2,11 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.exception.StudentNotFoundException;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
+
 import java.util.Set;
 
 @RestController
@@ -18,7 +21,7 @@ public class StudentController {
 
     @GetMapping("{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id) {
-       Student student = studentService.getStudentById(id);
+        Student student = studentService.getStudentById(id);
         if (student != null) {
             return ResponseEntity.ok(student);
         }
@@ -41,7 +44,13 @@ public class StudentController {
 
     @DeleteMapping("{id}")
     public ResponseEntity deleteStudent(@PathVariable Long id) {
-        Student delStudent = studentService.deleteStudent(id);
+
+        Student delStudent = null;
+        try {
+            delStudent = studentService.deleteStudent(id);
+        } catch (StudentNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         if (delStudent != null) {
             return ResponseEntity.ok(delStudent);
         }
@@ -55,5 +64,25 @@ public class StudentController {
             ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(filterStudents);
+    }
+
+    @GetMapping("/getStudentsByAgeBetween/{min},{max}")
+    public ResponseEntity<Set<Student>> getStudentsByAgeBetween(@PathVariable int min, @PathVariable int max) {
+        Set<Student> getStudents = studentService.getStudentsByAgeBetween(min, max);
+        if (getStudents.isEmpty()) {
+            ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(getStudents);
+    }
+
+    @GetMapping("/getFacultetOfStudentById/{id}")
+    public ResponseEntity<Faculty> getFacultetOfStudentById(@PathVariable long id) {
+        Faculty faculty = null;
+        try {
+            faculty = studentService.getFacultyOfStudentById(id);
+        } catch (StudentNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok(faculty);
     }
 }

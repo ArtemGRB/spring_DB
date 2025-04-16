@@ -45,16 +45,9 @@ public class StudentController {
     @DeleteMapping("{id}")
     public ResponseEntity deleteStudent(@PathVariable Long id) {
 
-        Student delStudent = null;
-        try {
-            delStudent = studentService.deleteStudent(id);
-        } catch (StudentNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        if (delStudent != null) {
-            return ResponseEntity.ok(delStudent);
-        }
-        return ResponseEntity.notFound().build();
+        Student delStudent = studentService.deleteStudent(id);
+        return ResponseEntity.ok(delStudent);
+
     }
 
     @GetMapping("filter/{age}")
@@ -77,12 +70,7 @@ public class StudentController {
 
     @GetMapping("/getFacultetOfStudentById/{id}")
     public ResponseEntity<Faculty> getFacultetOfStudentById(@PathVariable long id) {
-        Faculty faculty = null;
-        try {
-            faculty = studentService.getFacultyOfStudentById(id);
-        } catch (StudentNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        Faculty faculty = studentService.getFacultyOfStudentById(id);
         return ResponseEntity.ok(faculty);
     }
 }

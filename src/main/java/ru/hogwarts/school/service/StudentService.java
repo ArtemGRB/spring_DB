@@ -39,7 +39,7 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student deleteStudent(long id) throws StudentNotFoundException {
+    public Student deleteStudent(long id) {
         Student student = studentRepository.findById(id)
                 .orElseThrow(()->new StudentNotFoundException("Студент по данному ID не найден"));
         studentRepository.deleteById(id);
@@ -54,9 +54,9 @@ public class StudentService {
         return studentRepository.findByAgeBetween(min, max);
     }
 
-    public Faculty getFacultyOfStudentById(long id) throws StudentNotFoundException {
+    public Faculty getFacultyOfStudentById(long id) {
         return studentRepository.findById(id)
-                .orElseThrow(()->new StudentNotFoundException("Студент по данному ID не найден"))
+                .orElseThrow(() -> new StudentNotFoundException("Студент по данному ID не найден"))
                 .getFaculty();
     }
 }

@@ -2,6 +2,8 @@ package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exception.StudentNotFoundException;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
@@ -22,10 +24,14 @@ public class StudentService {
     }
 
     public Student getStudentById(long id) {
-        if (studentRepository.existsById(id)) {
-            return studentRepository.findById(id).get();
+        Student student = null;
+        try {
+            student = studentRepository.findById(id)
+                    .orElseThrow(()->new StudentNotFoundException("Студент по данному ID не найден"));
+        } catch (StudentNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        return null;
+        return student;
     }
 
     public Student updateStudent(long id, Student student) {
@@ -34,15 +40,23 @@ public class StudentService {
     }
 
     public Student deleteStudent(long id) {
-        Optional<Student> student = studentRepository.findById(id);
+        Student student = studentRepository.findById(id)
+                .orElseThrow(()->new StudentNotFoundException("Студент по данному ID не найден"));
         studentRepository.deleteById(id);
-        if (studentRepository.existsById(id)) {
-            return student.get();
-        }
-        return null;
+            return student;
     }
 
     public Set<Student> filterStudent(int age) {
         return studentRepository.findByAge(age);
+    }
+
+    public Set<Student> getStudentsByAgeBetween(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
+    }
+
+    public Faculty getFacultyOfStudentById(long id) {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException("Студент по данному ID не найден"))
+                .getFaculty();
     }
 }

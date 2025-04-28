@@ -50,8 +50,8 @@ public class FacultyController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("filter/{color}")
-    public ResponseEntity<Set<Faculty>> filterStudents(@PathVariable String color) {
+    @GetMapping("/filter/{color}")
+    public ResponseEntity<Set<Faculty>> filterFaculty(@PathVariable String color) {
         Set<Faculty> filterFaculty = facultyService.filterFaculty(color);
         if (filterFaculty.isEmpty()) {
             ResponseEntity.badRequest().build();
@@ -59,12 +59,12 @@ public class FacultyController {
         return ResponseEntity.ok(filterFaculty);
     }
 
-    @GetMapping("findByNameOrColor/{request}")
+    @GetMapping("/findByNameOrColor/{request}")
     public ResponseEntity<Faculty> findByNameOrColor(@PathVariable String request) {
         return ResponseEntity.ok(facultyService.getFacultyByNameOrColor(request));
     }
 
-    @GetMapping("getStudentsOfFacultyById/{id}")
+    @GetMapping("/getStudentsOfFacultyById/{id}")
     public ResponseEntity<Collection<Student>> getStudentsOfFacultyById(@PathVariable long id) {
         return ResponseEntity.ok(facultyService.getStudentsOfFacultyById(id));
     }

@@ -49,7 +49,7 @@ public class StudentController {
 
     }
 
-    @GetMapping("filter/{age}")
+    @GetMapping("/filter/{age}")
     public ResponseEntity<Set<Student>> filterStudents(@PathVariable int age) {
         Set<Student> filterStudents = studentService.filterStudent(age);
         if (filterStudents.isEmpty()) {

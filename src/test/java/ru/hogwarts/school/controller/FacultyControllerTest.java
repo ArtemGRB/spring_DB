@@ -43,38 +43,17 @@ class FacultyControllerTest {
         faculty.setName("test");
 
         String jsonResponse = restTemplate
-                .postForObject("http://localhost:" + port + "/faculty",faculty,String.class);
+                .postForObject("http://localhost:" + port + "/faculty", faculty, String.class);
 
         Assertions.assertThat(jsonResponse).isNotNull();
 
-        String facultyName =  JsonPath.parse(jsonResponse).read("$.name", String.class);
+        String facultyName = JsonPath.parse(jsonResponse).read("$.name", String.class);
         Assertions.assertThat(facultyName).isEqualTo("test");
-        String facultyColor =  JsonPath.parse(jsonResponse).read("$.color", String.class);
+        String facultyColor = JsonPath.parse(jsonResponse).read("$.color", String.class);
         Assertions.assertThat(facultyColor).isEqualTo("test");
 
-        Long facultyId =  JsonPath.parse(jsonResponse).read("$.id", Long.class);
+        Long facultyId = JsonPath.parse(jsonResponse).read("$.id", Long.class);
         restTemplate.delete("http://localhost:" + port + "/faculty/" + facultyId);
-
-
     }
 
-    @Test
-    void updateFaculty() {
-    }
-
-    @Test
-    void deleteFaculty() {
-    }
-
-    @Test
-    void filterStudents() {
-    }
-
-    @Test
-    void findByNameOrColor() {
-    }
-
-    @Test
-    void getStudentsOfFacultyById() {
-    }
 }

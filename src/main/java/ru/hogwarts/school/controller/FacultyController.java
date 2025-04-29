@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @RestController
-@RequestMapping("faculty")
+@RequestMapping("faculty/")
 public class FacultyController {
 
     private final FacultyService facultyService;
@@ -51,7 +51,7 @@ public class FacultyController {
     }
 
     @GetMapping("filter/{color}")
-    public ResponseEntity<Set<Faculty>> filterStudents(@PathVariable String color) {
+    public ResponseEntity<Set<Faculty>> filterFaculties(@PathVariable String color) {
         Set<Faculty> filterFaculty = facultyService.filterFaculty(color);
         if (filterFaculty.isEmpty()) {
             ResponseEntity.badRequest().build();

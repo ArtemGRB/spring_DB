@@ -10,10 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
-import java.util.Optional;
+import java.util.*;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -74,7 +75,7 @@ class FacultyControllerTest {
         when(facultyRepository.save(faculty)).thenReturn(faculty);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/faculty")
+                        .post("/faculty/")
                         .content(facultyObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -104,7 +105,7 @@ class FacultyControllerTest {
         when(facultyRepository.save(faculty)).thenReturn(faculty);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/faculty")
+                        .put("/faculty/")
                         .content(facultyObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -116,7 +117,7 @@ class FacultyControllerTest {
     }
 
     @Test
-    void deleteFaculty() throws Exception {
+    void testDeleteFaculty() throws Exception {
         long id = 1L;
         String name = "test";
         String color = "test";
@@ -136,5 +137,85 @@ class FacultyControllerTest {
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
                 .andExpect(jsonPath("$.color").value(color));
+    }
+
+    @Test
+    void testFilterFaculties() throws Exception {
+        long id = 1L;
+        String name = "test";
+        String color = "test";
+
+        Faculty faculty = new Faculty();
+        faculty.setId(id);
+        faculty.setName(name);
+        faculty.setColor(color);
+
+        Set<Faculty> facultySet = new HashSet<>();
+        facultySet.add(faculty);
+
+        when(facultyRepository.findByColor(color)).thenReturn(facultySet);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculty/filter/" + color)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(id))
+                .andExpect(jsonPath("$[0].name").value(name))
+                .andExpect(jsonPath("$[0].color").value(color));
+
+    }
+
+    @Test
+    void testFindByNameOrColor() throws Exception {
+
+        long id = 1L;
+        String name = "test";
+        String color = "test";
+
+        Faculty faculty = new Faculty();
+        faculty.setId(id);
+        faculty.setName(name);
+        faculty.setColor(color);
+
+        when(facultyRepository.findFirstByNameIgnoreCaseContainsOrColorIgnoreCaseContains(name, color))
+                .thenReturn(faculty);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculty/findByNameOrColor/" + name)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.name").value(name))
+                .andExpect(jsonPath("$.color").value(color));
+    }
+
+    @Test
+    void testGetStudentsOfFacultyById() throws Exception {
+        long id = 1L;
+        String name = "test";
+        String color = "test";
+
+        Faculty faculty = new Faculty();
+        faculty.setId(id);
+        faculty.setName(name);
+        faculty.setColor(color);
+
+        Student student = new Student();
+        student.setFaculty(faculty);
+        student.setId(id);
+        student.setName(name);
+
+        Collection<Student> studentCollection = new ArrayList<>();
+        studentCollection.add(student);
+        faculty.setStudents(studentCollection);
+
+        when(facultyRepository.findById(id)).thenReturn(Optional.of(faculty));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculty/getStudentsOfFacultyById/" + id)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(id))
+                .andExpect(jsonPath("$[0].name").value(name));
     }
 }

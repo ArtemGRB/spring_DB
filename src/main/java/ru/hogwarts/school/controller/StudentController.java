@@ -9,7 +9,7 @@ import ru.hogwarts.school.service.StudentService;
 import java.util.Set;
 
 @RestController
-@RequestMapping("student")
+@RequestMapping("student/")
 public class StudentController {
 
     private final StudentService studentService;
@@ -58,7 +58,7 @@ public class StudentController {
         return ResponseEntity.ok(filterStudents);
     }
 
-    @GetMapping("/getStudentsByAgeBetween/{min},{max}")
+    @GetMapping("getStudentsByAgeBetween/{min},{max}")
     public ResponseEntity<Set<Student>> getStudentsByAgeBetween(@PathVariable int min, @PathVariable int max) {
         Set<Student> getStudents = studentService.getStudentsByAgeBetween(min, max);
         if (getStudents.isEmpty()) {
@@ -67,7 +67,7 @@ public class StudentController {
         return ResponseEntity.ok(getStudents);
     }
 
-    @GetMapping("/getFacultyOfStudentById/{id}")
+    @GetMapping("getFacultyOfStudentById/{id}")
     public ResponseEntity<Faculty> getFacultyOfStudentById(@PathVariable long id) {
         Faculty faculty = studentService.getFacultyOfStudentById(id);
         return ResponseEntity.ok(faculty);

@@ -10,11 +10,13 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.service.AvatarService;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @RestController
 public class AvatarController {
@@ -59,5 +61,10 @@ public class AvatarController {
             response.setContentLength((int) avatar.getFileSize());
             is.transferTo(os);
         }
+    }
+
+    @GetMapping("getPageAvatars/{pageNumber},{pageSize}")
+    public ResponseEntity<List<Avatar>> getPageAvatars(@PathVariable int pageNumber, @PathVariable int pageSize) {
+        return ResponseEntity.ok(avatarService.getPageAvatars(pageNumber,pageSize));
     }
 }

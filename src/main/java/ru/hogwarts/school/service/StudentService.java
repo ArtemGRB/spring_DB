@@ -56,4 +56,18 @@ public class StudentService {
                 .orElseThrow(() -> new StudentNotFoundException("Студент по данному ID не найден"))
                 .getFaculty();
     }
+
+    public int getCountStudents(){
+        return studentRepository.getCountStudents();
+    }
+
+    public int getAvgAgeOfStudents(){
+        return studentRepository.getAvgAgeOfStudents();
+    }
+
+
+    public Set<Student> getEndFiveStudents(){
+        return studentRepository.getEndFiveStudents(getCountStudents()-5);
+    }
+
 }

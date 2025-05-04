@@ -5,6 +5,8 @@ import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
+
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -66,7 +68,7 @@ public class StudentService {
     }
 
 
-    public Set<Student> getEndFiveStudents(){
+    public List<Student> getEndFiveStudents(){
         return studentRepository.getEndFiveStudents(getCountStudents()-5);
     }
 

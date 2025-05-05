@@ -6,13 +6,24 @@ import org.springframework.data.repository.query.Param;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
+import java.util.List;
 import java.util.Set;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
-    public Set<Student> findByAge(int age);
+    Set<Student> findByAge(int age);
 
-    public Set<Student> findByAgeBetween(int min, int max);
+    Set<Student> findByAgeBetween(int min, int max);
 
     @Query("SELECT s.faculty FROM Student s WHERE s.id = :id")
-    public Faculty getFacultyOfStudentById(@Param("id") long id);
+    Faculty getFacultyOfStudentById(@Param("id") long id);
+
+    @Query("SELECT COUNT(*) FROM Student")
+    int getCountStudents();
+
+    @Query("SELECT AVG(s.age) FROM Student s")
+    int getAvgAgeOfStudents();
+
+    @Query(value = "SELECT * FROM Student ORDER BY id LIMIT 5 OFFSET :offset",
+            nativeQuery = true)
+    List<Student> getEndFiveStudents(@Param("offset") int offset);
 }

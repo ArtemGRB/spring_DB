@@ -5,6 +5,8 @@ import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
+
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -56,4 +58,18 @@ public class StudentService {
                 .orElseThrow(() -> new StudentNotFoundException("Студент по данному ID не найден"))
                 .getFaculty();
     }
+
+    public int getCountStudents(){
+        return studentRepository.getCountStudents();
+    }
+
+    public int getAvgAgeOfStudents(){
+        return studentRepository.getAvgAgeOfStudents();
+    }
+
+
+    public List<Student> getEndFiveStudents(){
+        return studentRepository.getEndFiveStudents(getCountStudents()-5);
+    }
+
 }

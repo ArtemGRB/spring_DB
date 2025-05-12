@@ -14,7 +14,7 @@ import java.util.Set;
 @Service
 public class StudentService {
 
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     private StudentRepository studentRepository;
 

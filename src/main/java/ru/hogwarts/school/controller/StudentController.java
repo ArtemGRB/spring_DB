@@ -75,19 +75,22 @@ public class StudentController {
     }
 
     @GetMapping("getCountStudents")
-    public ResponseEntity<Integer> getCountStudents(){
+    public ResponseEntity<Integer> getCountStudents() {
         return ResponseEntity.ok(studentService.getCountStudents());
     }
 
     @GetMapping("getAvgAgeOfStudents")
-    public ResponseEntity<Integer> getAvgAgeOfStudents(){
+    public ResponseEntity<Integer> getAvgAgeOfStudents() {
         return ResponseEntity.ok(studentService.getAvgAgeOfStudents());
     }
 
     @GetMapping("getEndFiveStudents")
-    public ResponseEntity<List<Student>> getEndFiveStudents(){
+    public ResponseEntity<List<Student>> getEndFiveStudents() {
         return ResponseEntity.ok(studentService.getEndFiveStudents());
     }
 
-
+    @GetMapping("getStudentsWereNameStartsWithLetterA")
+    public ResponseEntity<List<String>> getStudentsWereNameStartsWithLetterA() {
+        return ResponseEntity.ok(studentService.getStudentsWereNameStartsWithLetterA());
+    }
 }

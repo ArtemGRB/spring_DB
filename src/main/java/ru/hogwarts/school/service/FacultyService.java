@@ -6,6 +6,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.*;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 @Service
@@ -64,8 +65,14 @@ public class FacultyService {
         return longestName.get();
     }
 
-    public int getInt() {
-        int sum = Stream.iterate(1, a -> a +1) .limit(1_000_000) .reduce(0, (a, b) -> a + b );
+    public long getInt() {
+        long sum = LongStream
+                .iterate(1, a -> a +1)
+//                .parallel()
+                .limit(1_000_000)
+//                .parallel()
+                .reduce(0,
+                        (a, b) -> a + b);
         return sum;
     }
 }

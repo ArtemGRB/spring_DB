@@ -76,7 +76,7 @@ public class FacultyController {
     }
 
     @GetMapping("getInt")
-    public ResponseEntity<Integer> getInt() {
+    public ResponseEntity<Long> getInt() {
         return ResponseEntity.ok(facultyService.getInt());
     }
 }

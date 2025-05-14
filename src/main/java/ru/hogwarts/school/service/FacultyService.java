@@ -78,7 +78,7 @@ public class FacultyService {
 
     public long getInt() {
         long sum = LongStream
-                .iterate(1, a -> a +1)
+                .iterate(1, a -> a + 1)
 //                .parallel()
                 .limit(1_000_000)
 //                .parallel()

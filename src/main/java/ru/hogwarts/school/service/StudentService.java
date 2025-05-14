@@ -1,6 +1,5 @@
 package ru.hogwarts.school.service;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ public class StudentService {
 
     private Logger logger = LoggerFactory.getLogger(StudentService.class);
 
-
     private StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentRepository) {
@@ -35,7 +33,7 @@ public class StudentService {
         Student student = null;
         try {
             student = studentRepository.findById(id)
-                    .orElseThrow(()->new StudentNotFoundException("Студент по данному ID не найден"));
+                    .orElseThrow(() -> new StudentNotFoundException("Студент по данному ID не найден"));
         } catch (StudentNotFoundException e) {
             logger.error("There is not student with id = " + id);
             throw new RuntimeException(e);
@@ -52,10 +50,10 @@ public class StudentService {
 
     public Student deleteStudent(long id) {
         Student student = studentRepository.findById(id)
-                .orElseThrow(()->new StudentNotFoundException("Студент по данному ID не найден"));
+                .orElseThrow(() -> new StudentNotFoundException("Студент по данному ID не найден"));
         studentRepository.deleteById(id);
         logger.info("Was invoked method for delete student");
-            return student;
+        return student;
     }
 
     public Set<Student> filterStudent(int age) {
@@ -75,12 +73,12 @@ public class StudentService {
                 .getFaculty();
     }
 
-    public int getCountStudents(){
+    public int getCountStudents() {
         logger.info("Was invoked method for get count students");
         return studentRepository.getCountStudents();
     }
 
-    public int getAvgAgeOfStudents(){
+    public int getAvgAgeOfStudents() {
 
         List<Student> allStudents = studentRepository.findAll();
         double avgAge = allStudents.stream()
@@ -91,12 +89,12 @@ public class StudentService {
 
     }
 
-    public List<Student> getEndFiveStudents(){
+    public List<Student> getEndFiveStudents() {
         logger.info("Was invoked method for get end five students");
-        return studentRepository.getEndFiveStudents(getCountStudents()-5);
+        return studentRepository.getEndFiveStudents(getCountStudents() - 5);
     }
 
-    public List<String> getStudentsWereNameStartsWithLetterA(){
+    public List<String> getStudentsWereNameStartsWithLetterA() {
         List<Student> allStudents = studentRepository.findAll();
         return allStudents.stream()
                 .filter(s -> s.getName().startsWith("А"))

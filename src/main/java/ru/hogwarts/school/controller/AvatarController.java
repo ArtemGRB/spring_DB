@@ -65,6 +65,6 @@ public class AvatarController {
 
     @GetMapping("getPageAvatars/{pageNumber},{pageSize}")
     public ResponseEntity<List<Avatar>> getPageAvatars(@PathVariable int pageNumber, @PathVariable int pageSize) {
-        return ResponseEntity.ok(avatarService.getPageAvatars(pageNumber,pageSize));
+        return ResponseEntity.ok(avatarService.getPageAvatars(pageNumber, pageSize));
     }
 }

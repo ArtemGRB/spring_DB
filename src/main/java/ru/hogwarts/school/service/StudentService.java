@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -8,13 +9,16 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
 
     private Logger logger = LoggerFactory.getLogger(StudentService.class);
+
 
     private StudentRepository studentRepository;
 
@@ -77,13 +81,28 @@ public class StudentService {
     }
 
     public int getAvgAgeOfStudents(){
-        logger.info("Was invoked method for get avg ag of students");
-        return studentRepository.getAvgAgeOfStudents();
+
+        List<Student> allStudents = studentRepository.findAll();
+        double avgAge = allStudents.stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
+        return (int) avgAge;
+
     }
 
     public List<Student> getEndFiveStudents(){
         logger.info("Was invoked method for get end five students");
         return studentRepository.getEndFiveStudents(getCountStudents()-5);
+    }
+
+    public List<String> getStudentsWereNameStartsWithLetterA(){
+        List<Student> allStudents = studentRepository.findAll();
+        return allStudents.stream()
+                .filter(s -> s.getName().startsWith("А"))
+                .map(student -> student.getName().toUpperCase())
+                .sorted()
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
 }

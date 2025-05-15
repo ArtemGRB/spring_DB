@@ -103,4 +103,33 @@ public class StudentService {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
+    public void printParallel() {
+        System.out.println("----------------------------");
+        List<Student> studentArrayList = studentRepository.findAll();
+        printToConsole(1, studentArrayList);
+
+        new Thread(() -> printToConsole(2,studentArrayList)).start();
+        new Thread(() -> printToConsole(3,studentArrayList)).start();
+    }
+
+    public void printSynchronized() {
+        System.out.println("--------Synchronized---------");
+        List<Student> studentArrayList = studentRepository.findAll();
+        printToConsole(1, studentArrayList);
+
+        new Thread(() -> printToConsoleSynchronize(2,studentArrayList)).start();
+        new Thread(() -> printToConsoleSynchronize(3,studentArrayList)).start();
+    }
+
+    public void printToConsole(int n, List<Student> studentList) {
+        for (int i = (n-1) * 2; i < n*2; i++) {
+            System.out.println(studentList.get(i).getName());
+        }
+    }
+
+    public synchronized void printToConsoleSynchronize(int n, List<Student> studentList) {
+        for (int i = (n-1) * 2; i < n*2; i++) {
+            System.out.println(studentList.get(i).getName());
+        }
+    }
 }

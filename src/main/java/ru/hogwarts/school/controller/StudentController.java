@@ -93,4 +93,14 @@ public class StudentController {
     public ResponseEntity<List<String>> getStudentsWereNameStartsWithLetterA() {
         return ResponseEntity.ok(studentService.getStudentsWereNameStartsWithLetterA());
     }
+
+    @GetMapping("print-parallel")
+    public void printParallel() {
+        studentService.printParallel();
+    }
+
+    @GetMapping("print-synchronized")
+    public void printSynchronized() {
+        studentService.printSynchronized();
+    }
 }

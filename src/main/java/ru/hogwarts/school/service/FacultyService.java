@@ -8,7 +8,7 @@ import ru.hogwarts.school.repository.FacultyRepository;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
-
+//ацуайцупакупцу
 @Service
 public class FacultyService {
 
